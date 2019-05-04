@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.SearchActivity" />
-        <activity android:name=".activity.CollectionActivity"></activity>
+        <activity android:name=".activity.ShortCutActivity" android:label="快捷方式"/>
+        <activity android:name=".activity.CollectionActivity" android:label="收藏添加"/>
     </application>
 
 </manifest>

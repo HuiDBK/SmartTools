@@ -7,19 +7,20 @@
         app:showAsAction="always"
         app:actionViewClass="android.support.v7.widget.SearchView" />
     <item
-        android:title="测试1"
+        android:id="@+id/shortcut"
+        android:title="快捷方式"
         app:showAsAction="never" />
     <item
-        android:title="测试2"
+        android:title="设置"
         app:showAsAction="never" />
     <item
-        android:title="测试3"
+        android:title="关于"
         app:showAsAction="never" />
     <item
-        android:title="测试4"
+        android:title="友情赞助"
         app:showAsAction="never" />
     <item
-        android:title="测试5"
+        android:title="领取红包中彩蛋！"
         app:showAsAction="never" />
 
 </menu>

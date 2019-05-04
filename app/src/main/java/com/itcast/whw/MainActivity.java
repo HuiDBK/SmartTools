@@ -19,6 +19,7 @@ import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.ashokvarma.bottomnavigation.TextBadgeItem;
 import com.itcast.whw.activity.BaseActivity;
 import com.itcast.whw.activity.SearchActivity;
+import com.itcast.whw.activity.ShortCutActivity;
 import com.itcast.whw.adapter.SectionPageAdapter;
 import com.itcast.whw.fragment.HomeFragment;
 import com.itcast.whw.fragment.MineFragment;
@@ -123,7 +124,11 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
+        switch (item.getItemId()){
+            case R.id.shortcut://快捷方式
+                startActivity(new Intent(this,ShortCutActivity.class));
+                break;
+        }
         return super.onOptionsItemSelected(item);
     }
 
