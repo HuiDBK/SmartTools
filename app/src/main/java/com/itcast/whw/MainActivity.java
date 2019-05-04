@@ -91,7 +91,6 @@ public class MainActivity extends BaseActivity {
 
             }
         });
-        viewPager.setCurrentItem(0);
     }
 
     @Override
