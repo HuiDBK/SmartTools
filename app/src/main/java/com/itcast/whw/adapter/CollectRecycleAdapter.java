@@ -36,6 +36,7 @@ public class CollectRecycleAdapter extends RecyclerView.Adapter<CollectRecycleAd
         return viewHolder;
     }
 
+
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         String str = strList.get(position);

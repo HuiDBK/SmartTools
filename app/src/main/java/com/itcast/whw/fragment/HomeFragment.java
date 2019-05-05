@@ -10,9 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-
 import com.itcast.whw.R;
 import com.itcast.whw.activity.CollectionActivity;
+import com.itcast.whw.activity.LoginActivity;
 import com.itcast.whw.tool.DensityUtil;
 
 /**
@@ -35,7 +35,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
      * true:用户已登录
      * false:用户未登录
      */
-    private boolean loginFlag = true;
+    private boolean loginFlag = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -97,7 +97,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     //用户已登录，显示工具库，供用户收藏
                     startActivity(new Intent(getActivity(), CollectionActivity.class));
                 }else{
-                    //弹出提示框，提示用户登录
+                    //跳转登录界面
+                    startActivity(new Intent(getActivity(),LoginActivity.class));
                 }
                 break;
         }
