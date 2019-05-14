@@ -1,6 +1,7 @@
 package com.itcast.whw;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.ashokvarma.bottomnavigation.TextBadgeItem;
 import com.itcast.whw.activity.BaseActivity;
+import com.itcast.whw.activity.CollectionActivity;
 import com.itcast.whw.activity.SearchActivity;
 import com.itcast.whw.activity.ShortCutActivity;
 import com.itcast.whw.adapter.SectionPageAdapter;
@@ -25,8 +27,11 @@ import com.itcast.whw.fragment.HomeFragment;
 import com.itcast.whw.fragment.MineFragment;
 import com.itcast.whw.fragment.ToolFragment;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 /**
  * APP主界面
@@ -36,11 +41,21 @@ public class MainActivity extends BaseActivity {
     private Toolbar toolBar;
     private ViewPager viewPager;
     private BottomNavigationBar bottom_navigation_bar;
+    private boolean isEmptyCollect;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Intent intent = getIntent();
+        HashSet<Map<String,Integer>> collect_info = (HashSet<Map<String,Integer>>)intent.getSerializableExtra("collect_info");
+
+        if(collect_info!=null){
+            isEmptyCollect = collect_info.isEmpty();
+        }
+
         initView();
         setSupportActionBar(toolBar);
         //去除ToolBar的标题
@@ -127,6 +142,9 @@ public class MainActivity extends BaseActivity {
         switch (item.getItemId()){
             case R.id.shortcut://快捷方式
                 startActivity(new Intent(this,ShortCutActivity.class));
+                break;
+            case R.id.all_functions://快捷方式
+                startActivity(new Intent(this,CollectionActivity.class));
                 break;
         }
         return super.onOptionsItemSelected(item);

@@ -6,17 +6,19 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.itcast.whw.MainActivity;
 import com.itcast.whw.R;
 import com.itcast.whw.tool.JellyInterpolator;
 
@@ -36,6 +38,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private LinearLayout mName, mPsw;
     private TextView tv_register;
     private ImageView login_back;
+    private LinearLayout input_layout_name;
+    private LinearLayout input_layout_psw;
+    private ProgressBar progressBar2;
+    private TextView visitors_login;
+    private TextView main_btn_login;
+    private SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +66,21 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         mBtnLogin.setOnClickListener(this);
         tv_register.setOnClickListener(this);
         login_back.setOnClickListener(this);
+        input_layout_name = (LinearLayout) findViewById(R.id.input_layout_name);
+        input_layout_name.setOnClickListener(this);
+        input_layout_psw = (LinearLayout) findViewById(R.id.input_layout_psw);
+        input_layout_psw.setOnClickListener(this);
+        progressBar2 = (ProgressBar) findViewById(R.id.progressBar2);
+        progressBar2.setOnClickListener(this);
+        visitors_login = (TextView) findViewById(R.id.visitors_login);
+        visitors_login.setOnClickListener(this);
+        main_btn_login = (TextView) findViewById(R.id.main_btn_login);
+        main_btn_login.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.main_btn_login:
                 //点击登录按钮，进行登录
                 mWidth = mBtnLogin.getMeasuredWidth();
@@ -77,10 +95,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 verifyLoginInfo();
 
                 break;
+            case R.id.visitors_login:
+                //游客登录
+                sp = getSharedPreferences("visitors_info",MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit().putBoolean("isVisitors", true);
+                editor.apply();
+                startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                break;
             case R.id.tv_register:
                 //点击注册按钮，跳转注册界面
-                startActivity(new Intent(this,RegisterActivity.class));
-                overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+                startActivity(new Intent(this, RegisterActivity.class));
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 finish();
                 break;
             case R.id.login_back:
@@ -94,7 +119,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
      * 校验登录信息
      */
     private void verifyLoginInfo() {
-        
+
     }
 
     private void inputAnimator(final View view, float w, float h) {

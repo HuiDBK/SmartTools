@@ -2,18 +2,31 @@ package com.itcast.whw.fragment;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
+
 import com.itcast.whw.R;
 import com.itcast.whw.activity.CollectionActivity;
 import com.itcast.whw.activity.LoginActivity;
+import com.itcast.whw.adapter.CollectRecycleAdapter;
 import com.itcast.whw.tool.DensityUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 首页
@@ -23,6 +36,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private RelativeLayout relativeLayout;
     private static final String TAG = HomeFragment.class.getSimpleName();
 
+    private SharedPreferences visitors_sp;
+    private SharedPreferences collect_info_sp;
+    private List<String> collected_list;
+
+    /**
+     * 临时标记
+     * true:游客用户已登录
+     * false:游客用户未登录
+     */
+    private boolean isVisitors;
+
     /**
      * 临时标记
      * true:用户有收藏记录
@@ -30,21 +54,36 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
      */
     private boolean flag = false;
 
-    /**
-     * 临时标记
-     * true:用户已登录
-     * false:用户未登录
-     */
-    private boolean loginFlag = false;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        collect_info_sp = getActivity().getSharedPreferences("collect_info",Context.MODE_PRIVATE);
         View view;
+        visitors_sp = getActivity().getSharedPreferences("visitors_info",Context.MODE_PRIVATE);
+        //取出游客登录标志
+        isVisitors = visitors_sp.getBoolean("isVisitors", false);
+
+        //取出收藏数据
+        Set<String> collect = collect_info_sp.getStringSet("collect", null);
+
+        if(collect!=null){
+            flag =(!collect.isEmpty());
+            Log.d(TAG, "CollectionActivity:" + flag);
+        }
         if (flag) {
             //用户有收藏数据，显示该界面
             view = inflater.inflate(R.layout.fragment_home2, container, false);
-
+            RecyclerView recycler_collected = view.findViewById(R.id.recycler_collected);
+            FloatingActionButton collect_delete = view.findViewById(R.id.collect_delete);
+            collected_list = new ArrayList<>();
+            for(String collected : collect){
+                collected_list.add(collected);
+            }
+            CollectRecycleAdapter collectAdapter = new CollectRecycleAdapter(collected_list,getActivity(),collect_delete);
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+            recycler_collected.setLayoutManager(gridLayoutManager);
+            collectAdapter.setType(1);
+            recycler_collected.setAdapter(collectAdapter);
         } else {
             //暂无收藏，显示该界面
             view = inflater.inflate(R.layout.fragment_home, container, false);
@@ -81,6 +120,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         relativeLayout = (RelativeLayout) view.findViewById(R.id.relativeLayout);
 
         iv_collection.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
     }
 
     /**
@@ -93,12 +139,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.iv_collection:
                 //点击收藏图标，判断用户是否登录，若未登录，提示登录
-                if(loginFlag){
+                if(isVisitors){
                     //用户已登录，显示工具库，供用户收藏
                     startActivity(new Intent(getActivity(), CollectionActivity.class));
+                    getActivity().finish();
                 }else{
                     //跳转登录界面
                     startActivity(new Intent(getActivity(),LoginActivity.class));
+                    getActivity().finish();
                 }
                 break;
         }

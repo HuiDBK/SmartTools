@@ -10,6 +10,8 @@
         android:id="@+id/shortcut"
         android:title="快捷方式"
         app:showAsAction="never" />
+    <item android:id="@+id/all_functions"
+        android:title="全部功能"/>
     <item
         android:title="设置"
         app:showAsAction="never" />
