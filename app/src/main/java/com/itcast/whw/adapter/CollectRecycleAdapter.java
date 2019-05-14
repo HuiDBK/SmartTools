@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.itcast.whw.MainActivity;
 import com.itcast.whw.R;
+import com.itcast.whw.activity.search_near.NearMapActivity;
 import com.itcast.whw.tool.LogUtil;
 
 import java.util.ArrayList;
@@ -125,8 +126,11 @@ public class CollectRecycleAdapter extends RecyclerView.Adapter<CollectRecycleAd
             holder.collect_function.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(function.equals("查看附近")){
-                        
+                    String collect_text = holder.collect_function.getText().toString();
+                    Log.d("CollectRecycleAdapter", collect_text);
+                    if(collect_text.equals("查看附近")){
+                        Activity activity = (Activity) context;
+                        activity.startActivity(new Intent(context,NearMapActivity.class));
                     }
                 }
             });
